@@ -20,6 +20,7 @@
             min-height: 100vh;
         }
 
+        /* Background */
         .bg {
             position: fixed;
             inset: 0;
@@ -30,16 +31,17 @@
         .overlay {
             position: fixed;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.93) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.88) 50%, rgba(0,0,0,0.95) 100%);
             z-index: -2;
         }
 
+        /* Snowfall */
         .snowflake {
             position: fixed;
             top: -20px;
             color: #fff;
             font-size: 13px;
-            opacity: 0.32;
+            opacity: 0.3;
             z-index: -1;
             pointer-events: none;
             animation: snowfall linear infinite;
@@ -47,68 +49,135 @@
         }
 
         @keyframes snowfall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0.32; }
-            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.08; }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.05; }
         }
 
-        .container {
-            max-width: 920px;
-            margin: 0 auto;
-            padding: 80px 24px 120px;
-            position: relative;
-            z-index: 2;
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 70px;
+            height: 100vh;
+            background: rgba(10, 10, 18, 0.95);
+            border-right: 1px solid rgba(255, 51, 102, 0.3);
+            z-index: 100;
+            transition: width 0.35s ease;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
         }
 
-        .title-wrapper {
-            text-align: center;
-            margin-bottom: 80px;
+        .sidebar.expanded {
+            width: 280px;
+        }
+
+        .sidebar-toggle {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: #ff3366;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
             opacity: 0;
-            transform: scale(0.7) translateY(40px);
-            animation: titleReveal 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+            transition: opacity 0.3s ease;
         }
 
+        .sidebar.expanded .sidebar-menu {
+            opacity: 1;
+        }
+
+        .nav-item {
+            padding: 18px 28px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #ccc;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 51, 102, 0.12);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: rgba(255, 51, 102, 0.2);
+            color: #ff3366;
+            border-left: 4px solid #ff3366;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 70px;
+            padding: 60px 30px 100px;
+            transition: margin-left 0.35s ease;
+            max-width: 980px;
+        }
+
+        .sidebar.expanded ~ .main {
+            margin-left: 280px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Title */
         .main-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.8rem, 8vw, 5.2rem);
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
             font-weight: 900;
-            letter-spacing: 2px;
-            line-height: 1.1;
+            text-align: center;
+            margin-bottom: 12px;
             background: linear-gradient(90deg, #ff0066, #ff9900, #00ffcc, #6600ff, #ff0066);
             background-size: 300% 100%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: rgbFlow 6s linear infinite;
-            text-shadow: 0 0 40px rgba(255, 0, 102, 0.4);
-            margin-bottom: 16px;
+            animation: rgbFlow 7s linear infinite;
         }
 
         .subtitle {
-            font-size: 1.15rem;
+            text-align: center;
             color: #aaa;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            opacity: 0;
-            animation: fadeUp 1s ease 1.6s forwards;
+            margin-bottom: 50px;
+            font-size: 0.95rem;
         }
 
-        .story {
-            opacity: 0;
-            transform: translateY(50px);
-            animation: storyReveal 1.4s ease 2.2s forwards;
-        }
-
+        /* Story text */
         .story p {
-            font-size: 1.18rem;
+            font-size: 1.15rem;
             line-height: 1.9;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             background: linear-gradient(90deg, #ff3366, #ff9900, #00ffcc, #cc66ff, #ff3366);
             background-size: 300% 100%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             animation: rgbFlow 9s linear infinite;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.7);
         }
 
         .story .name {
@@ -117,7 +186,7 @@
             background-clip: unset !important;
             color: #ff4d6d !important;
             font-weight: 700;
-            text-shadow: 0 0 12px rgba(255, 77, 109, 0.55);
+            text-shadow: 0 0 12px rgba(255, 77, 109, 0.5);
         }
 
         .story .legend {
@@ -126,25 +195,20 @@
             background-clip: unset !important;
             color: #00e5ff !important;
             font-weight: 700;
-            text-shadow: 0 0 12px rgba(0, 229, 255, 0.55);
+            text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
         }
 
-        /* New Section - Red Story */
-        .red-story {
-            margin-top: 80px;
-        }
-
+        /* Red story */
         .red-story p {
-            font-size: 1.18rem;
+            font-size: 1.15rem;
             line-height: 1.9;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             background: linear-gradient(90deg, #ff0000, #ff4d4d, #ff1a1a, #cc0000, #ff0000);
             background-size: 300% 100%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             animation: rgbFlow 8s linear infinite;
-            text-shadow: 0 2px 15px rgba(255, 0, 0, 0.4);
         }
 
         .red-story .name {
@@ -153,7 +217,6 @@
             background-clip: unset !important;
             color: #ff3333 !important;
             font-weight: 700;
-            text-shadow: 0 0 15px rgba(255, 50, 50, 0.7);
         }
 
         .red-story .villain {
@@ -162,54 +225,61 @@
             background-clip: unset !important;
             color: #ff6666 !important;
             font-weight: 700;
-            text-shadow: 0 0 12px rgba(255, 100, 100, 0.6);
+        }
+
+        /* Chachas story */
+        .chacha-story p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 28px;
+            background: linear-gradient(90deg, #00ffcc, #00bfff, #7b68ee, #00ffcc);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rgbFlow 8s linear infinite;
+        }
+
+        .chacha-story .legend {
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
+            color: #00e5ff !important;
+            font-weight: 700;
+            text-shadow: 0 0 14px rgba(0, 229, 255, 0.6);
+        }
+
+        .chacha-story .name {
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
+            color: #ff4d6d !important;
+            font-weight: 700;
         }
 
         .section-image {
             width: 100%;
-            max-width: 700px;
-            border-radius: 20px;
-            margin: 60px auto 30px;
+            max-width: 680px;
+            border-radius: 18px;
+            margin: 40px auto;
             display: block;
-            border: 4px solid #ff3366;
-            box-shadow: 0 0 40px rgba(255, 51, 102, 0.4);
+            border: 3px solid #ff3366;
+            box-shadow: 0 0 35px rgba(255, 51, 102, 0.35);
         }
 
         .image-caption {
             text-align: center;
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 1.3rem;
             color: #ff4d6d;
-            margin-bottom: 60px;
-            text-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
+            margin-bottom: 40px;
+            font-weight: 600;
         }
 
         .divider {
             height: 2px;
             background: linear-gradient(90deg, transparent, #ff3366, #00ffcc, transparent);
-            margin: 50px 0;
-            opacity: 0.6;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #777;
-            font-size: 0.95rem;
-        }
-
-        @keyframes titleReveal {
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        @keyframes storyReveal {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeUp {
-            to { opacity: 1; }
+            margin: 45px 0;
+            opacity: 0.5;
         }
 
         @keyframes rgbFlow {
@@ -217,9 +287,11 @@
             100% { background-position: 300% 50%; }
         }
 
-        @media (max-width: 600px) {
-            .container { padding: 50px 18px 80px; }
-            .story p, .red-story p { font-size: 1.05rem; }
+        @media (max-width: 768px) {
+            .sidebar { width: 60px; }
+            .sidebar.expanded { width: 240px; }
+            .main { margin-left: 60px; padding: 40px 18px 80px; }
+            .sidebar.expanded ~ .main { margin-left: 240px; }
         }
     </style>
 </head>
@@ -228,145 +300,158 @@
     <div class="bg"></div>
     <div class="overlay"></div>
 
-    <!-- Snowfall -->
-    <div class="snowflake" style="left:4%;  animation-duration:15s; animation-delay:0s;">❄</div>
-    <div class="snowflake" style="left:12%; animation-duration:18s; animation-delay:2s;">❄</div>
-    <div class="snowflake" style="left:21%; animation-duration:14s; animation-delay:4s;">❄</div>
-    <div class="snowflake" style="left:33%; animation-duration:17s; animation-delay:1s;">❄</div>
-    <div class="snowflake" style="left:44%; animation-duration:16s; animation-delay:3s;">❄</div>
-    <div class="snowflake" style="left:55%; animation-duration:19s; animation-delay:5s;">❄</div>
-    <div class="snowflake" style="left:66%; animation-duration:15s; animation-delay:2.5s;">❄</div>
-    <div class="snowflake" style="left:76%; animation-duration:17s; animation-delay:0.8s;">❄</div>
-    <div class="snowflake" style="left:86%; animation-duration:14s; animation-delay:3.8s;">❄</div>
-    <div class="snowflake" style="left:94%; animation-duration:16s; animation-delay:1.6s;">❄</div>
+    <!-- Snow -->
+    <div class="snowflake" style="left:5%; animation-duration:16s;">❄</div>
+    <div class="snowflake" style="left:18%; animation-duration:14s; animation-delay:2s;">❄</div>
+    <div class="snowflake" style="left:32%; animation-duration:17s; animation-delay:4s;">❄</div>
+    <div class="snowflake" style="left:47%; animation-duration:15s; animation-delay:1s;">❄</div>
+    <div class="snowflake" style="left:61%; animation-duration:18s; animation-delay:3s;">❄</div>
+    <div class="snowflake" style="left:74%; animation-duration:14s; animation-delay:5s;">❄</div>
+    <div class="snowflake" style="left:87%; animation-duration:16s; animation-delay:2.5s;">❄</div>
 
-    <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-toggle" onclick="toggleSidebar()">☰</div>
+        <div class="sidebar-menu">
+            <div class="nav-item active" onclick="showSection('birth')">The Forbidden Genesis</div>
+            <div class="nav-item" onclick="showSection('raised')">The Milkman’s Curse</div>
+            <div class="nav-item" onclick="showSection('chachas')">Chachas</div>
+        </div>
+    </div>
 
-        <!-- TITLE -->
-        <div class="title-wrapper">
+    <!-- Main Content -->
+    <div class="main">
+
+        <!-- TAB 1: Birth Story -->
+        <div id="birth" class="section active">
             <h1 class="main-title">Birth Of A Burchatta</h1>
             <div class="subtitle">The Forbidden Genesis of Momo</div>
+
+            <div class="story">
+                <p>In the ancient, fog-drenched peaks of Nancha Bharwa Mountain — a place so remote that even the gods refuse to visit — the legendary <span class="legend">Ansh Bhaiii</span>, the undisputed emperor of raw dominance, the man whose very presence makes the earth tremble and women forget their own names, decided to take a sacred trip with his wife, Anita Kumari.</p>
+
+                <p>Anita was no ordinary woman. She was a certified, professional-grade randi of the highest order — a walking, moaning, endlessly wet cum-dump whose only purpose in life was to receive <span class="legend">Ansh Bhaiii</span>’s legendary strokes. <span class="legend">Ansh Bhaiii</span> fucked her like a man possessed. Morning, noon, night, while cooking, while brushing teeth, while she was half-asleep — it didn’t matter. He would grab her by the hair, bend her over any available surface, and rearrange her insides with such savage precision that her pussy stayed permanently swollen, red, and dripping for days. He invented new positions the way scientists invent rockets. He made her scream so loud that the mountain goats started developing trauma.</p>
+
+                <p>One evening, while the great <span class="legend">Ansh Bhaiii</span> was in his mountain cabin deeply focused on inventing yet another revolutionary way to destroy Anita’s holes (he was sketching diagrams of a new angle that would hit her cervix and her soul at the same time), the restless randi decided to go for a “short walk” into the dense, pitch-black forest.</p>
+
+                <p>She never came back the same.</p>
+
+                <p>Deep in that cursed forest, under a blood-red moon, a massive polar bear — ancient, muscular, hung like a cursed god — caught her scent. What followed was not sex. It was a geological event. The polar bear mounted Anita with the force of a collapsing glacier. He fucked her so brutally, so relentlessly, so animalistically that the ground cracked beneath them. Trees shook. Birds fell from the sky mid-flight. Anita’s screams turned into something between pure ecstasy and pure terror. The polar bear unloaded inside her with such violent volume that her stomach visibly bloated. He didn’t stop. He bred her like the forest itself demanded a sacrifice.</p>
+
+                <p>And in that unholy moment… two loads of cum collided.</p>
+
+                <p><span class="legend">Ansh Bhaiii</span>’s superior, god-tier semen (already sitting deep inside her from earlier that day) mixed with the thick, primal, cursed polar bear seed. The mixture was so chaotic, so genetically cursed, that the universe itself gagged. From that unholy cocktail of cum, a child was conceived in under an hour — an abomination that should never have existed.</p>
+
+                <p>Hours later, while <span class="legend">Ansh Bhaiii</span> was still calmly finishing his revolutionary sex diagrams, Anita stumbled back into the cabin, limping, leaking a disgusting mix of polar bear and husband cum down her thighs, and gave birth right there on the wooden floor like a broken animal.</p>
+
+                <p>What came out was not a baby.<br>It was <span class="name">Momo</span>.</p>
+
+                <p>A tall, lanky, spineless, brain-dead, motherfucking disappointment of a creature. Even as a newborn he looked like a failed science experiment. His first cry sounded like a dying goat. His eyes were already empty. The midwife (who was actually just <span class="legend">Ansh Bhaiii</span>’s left slipper) took one look and said, “This one is going to be a professional failure.”</p>
+
+                <p><span class="legend">Ansh Bhaiii</span>, being the noble and supremely intelligent man he is, did not panic. He simply invited the polar bear over for tea and wine like a true gentleman. The polar bear arrived wearing a tiny scarf. They sat outside under the stars, sipped expensive wine, discussed philosophy, climate change, and the correct way to destroy a randi’s holes. Then, as a gesture of mutual respect, both <span class="legend">Ansh Bhaiii</span> and the polar bear took Anita into the cabin and double-teamed her so savagely that the cabin nearly collapsed. They filled every hole. They made her speak in tongues. They turned her into a twitching, overflowing mess while the newborn <span class="name">Momo</span> somehow managed to crawl away into the night, already running from the greatness he would never achieve.</p>
+
+                <div class="divider"></div>
+
+                <p>Years passed.</p>
+
+                <p>That cursed mixture of <span class="legend">Ansh Bhaiii</span>’s divine seed and polar bear DNA grew into the walking disaster the world now knows as <span class="name">Momo</span> — a mentally handicapped, physics-allergic, ego-sucking, useless giraffe of a boy who exists purely to disappoint everyone who has ever met him. He is living proof that even when a legendary man like <span class="legend">Ansh Bhaiii</span> and a mythical polar bear combine forces, sometimes the universe still produces pure garbage.</p>
+
+                <p style="text-align:center; font-size:1.3rem; margin-top:40px;">
+                    <span class="name">Momo</span>: the polar bear’s greatest regret.<br>
+                    <span class="legend">Ansh Bhaiii</span>’s biggest unfinished project.<br>
+                    And the official village idiot of the entire friend group.
+                </p>
+            </div>
         </div>
 
-        <!-- FIRST STORY -->
-        <div class="story">
-            <p>
-                In the ancient, fog-drenched peaks of Nancha Bharwa Mountain — a place so remote that even the gods refuse to visit — the legendary <span class="legend">Ansh Bhaiii</span>, the undisputed emperor of raw dominance, the man whose very presence makes the earth tremble and women forget their own names, decided to take a sacred trip with his wife, Anita Kumari.
-            </p>
+        <!-- TAB 2: Raised Story -->
+        <div id="raised" class="section">
+            <h1 class="main-title">The Milkman’s Curse</h1>
+            <div class="subtitle">How the Abomination Was Raised</div>
 
-            <p>
-                Anita was no ordinary woman. She was a certified, professional-grade randi of the highest order — a walking, moaning, endlessly wet cum-dump whose only purpose in life was to receive <span class="legend">Ansh Bhaiii</span>’s legendary strokes. <span class="legend">Ansh Bhaiii</span> fucked her like a man possessed. Morning, noon, night, while cooking, while brushing teeth, while she was half-asleep — it didn’t matter. He would grab her by the hair, bend her over any available surface, and rearrange her insides with such savage precision that her pussy stayed permanently swollen, red, and dripping for days. He invented new positions the way scientists invent rockets. He made her scream so loud that the mountain goats started developing trauma.
-            </p>
+            <img src="momo-weak.png" alt="Weak Momo" class="section-image">
+            <div class="image-caption">Momo is actually a very weak and timid motherfucker</div>
 
-            <p>
-                One evening, while the great <span class="legend">Ansh Bhaiii</span> was in his mountain cabin deeply focused on inventing yet another revolutionary way to destroy Anita’s holes (he was sketching diagrams of a new angle that would hit her cervix and her soul at the same time), the restless randi decided to go for a “short walk” into the dense, pitch-black forest.
-            </p>
+            <div class="red-story">
+                <p>After being born out of pure disgrace on that cursed mountain, the newborn abomination known as <span class="name">Momo</span> somehow crawled away from the scene of his own shameful creation. The universe itself was so disgusted by his existence that it spat him out into the cold, forgotten hills of Nepal.</p>
 
-            <p>
-                She never came back the same.
-            </p>
+                <p>He eventually washed up in a miserable little village called <strong>Kotha</strong> — a place so backward that even the goats looked smarter than the humans living there. And it was here that fate delivered its final cruel joke: <span class="name">Momo</span> was found and raised by the biggest motherfucking asshole milkman the Himalayas had ever produced — <span class="villain">Dhanraj Raut</span>.</p>
 
-            <p>
-                Deep in that cursed forest, under a blood-red moon, a massive polar bear — ancient, muscular, hung like a cursed god — caught her scent. What followed was not sex. It was a geological event. The polar bear mounted Anita with the force of a collapsing glacier. He fucked her so brutally, so relentlessly, so animalistically that the ground cracked beneath them. Trees shook. Birds fell from the sky mid-flight. Anita’s screams turned into something between pure ecstasy and pure terror. The polar bear unloaded inside her with such violent volume that her stomach visibly bloated. He didn’t stop. He bred her like the forest itself demanded a sacrifice.
-            </p>
+                <p><span class="villain">Dhanraj Raut</span> was not a normal man. He was a walking, shouting, betel-nut chewing disaster. A fat, loud, illiterate milkman whose only achievements in life were diluting milk with water and producing the most useless son in the entire district. He raised <span class="name">Momo</span> the same way he treated his buffaloes — with zero affection, constant yelling, and the occasional slap across the head for existing.</p>
 
-            <p>
-                And in that unholy moment… two loads of cum collided.
-            </p>
+                <p>Every morning <span class="villain">Dhanraj</span> would drag the tall, spineless giraffe out of bed before sunrise, force him to carry heavy milk cans that his weak arms could barely lift, and scream at him in front of the whole village. “You useless polar-bear bastard! Even my buffalo gives better milk than the excuses you produce!” The entire village of Kotha would gather just to watch this daily humiliation ritual.</p>
 
-            <p>
-                <span class="legend">Ansh Bhaiii</span>’s superior, god-tier semen (already sitting deep inside her from earlier that day) mixed with the thick, primal, cursed polar bear seed. The mixture was so chaotic, so genetically cursed, that the universe itself gagged. From that unholy cocktail of cum, a child was conceived in under an hour — an abomination that should never have existed.
-            </p>
+                <p><span class="name">Momo</span> grew up as the official village punching bag. He was scared of dogs, scared of the dark, scared of his own shadow, and most of all scared of his own father. While other boys in Kotha climbed trees and fought, <span class="name">Momo</span> would hide behind the milk cans and cry like a little bitch whenever anyone raised their voice. The polar bear blood in him was completely wasted — all that remained was pure cowardice mixed with terminal stupidity.</p>
 
-            <p>
-                Hours later, while <span class="legend">Ansh Bhaiii</span> was still calmly finishing his revolutionary sex diagrams, Anita stumbled back into the cabin, limping, leaking a disgusting mix of polar bear and husband cum down her thighs, and gave birth right there on the wooden floor like a broken animal.
-            </p>
+                <p><span class="villain">Dhanraj Raut</span> never missed a chance to remind everyone that his “son” was a genetic failure. He would proudly tell customers, “This tall motherfucker is the result of a polar bear and a randi. That’s why he’s so weak. Even my leftover milk has more strength than him.” And <span class="name">Momo</span> would just stand there, head down, accepting every insult like the timid, spineless disappointment he was born to be.</p>
 
-            <p>
-                What came out was not a baby.<br>
-                It was <span class="name">Momo</span>.
-            </p>
+                <p>Years of this treatment turned <span class="name">Momo</span> into the ultimate soft, fragile, crybaby motherfucker. He became famous in Kotha not for any achievement, but for how quickly he would start shaking and tear up the moment someone looked at him the wrong way. The polar bear’s greatest creation had been reduced to a milkman’s terrified pet.</p>
 
-            <p>
-                A tall, lanky, spineless, brain-dead, motherfucking disappointment of a creature. Even as a newborn he looked like a failed science experiment. His first cry sounded like a dying goat. His eyes were already empty. The midwife (who was actually just <span class="legend">Ansh Bhaiii</span>’s left slipper) took one look and said, “This one is going to be a professional failure.”
-            </p>
-
-            <p>
-                <span class="legend">Ansh Bhaiii</span>, being the noble and supremely intelligent man he is, did not panic. He simply invited the polar bear over for tea and wine like a true gentleman. The polar bear arrived wearing a tiny scarf. They sat outside under the stars, sipped expensive wine, discussed philosophy, climate change, and the correct way to destroy a randi’s holes. Then, as a gesture of mutual respect, both <span class="legend">Ansh Bhaiii</span> and the polar bear took Anita into the cabin and double-teamed her so savagely that the cabin nearly collapsed. They filled every hole. They made her speak in tongues. They turned her into a twitching, overflowing mess while the newborn <span class="name">Momo</span> somehow managed to crawl away into the night, already running from the greatness he would never achieve.
-            </p>
-
-            <div class="divider"></div>
-
-            <p>
-                Years passed.
-            </p>
-
-            <p>
-                That cursed mixture of <span class="legend">Ansh Bhaiii</span>’s divine seed and polar bear DNA grew into the walking disaster the world now knows as <span class="name">Momo</span> — a mentally handicapped, physics-allergic, ego-sucking, useless giraffe of a boy who exists purely to disappoint everyone who has ever met him. He is living proof that even when a legendary man like <span class="legend">Ansh Bhaiii</span> and a mythical polar bear combine forces, sometimes the universe still produces pure garbage.
-            </p>
-
-            <p>
-                And thus, the legend was born.
-            </p>
-
-            <p style="text-align:center; font-size:1.35rem; margin-top:50px;">
-                <span class="name">Momo</span>: the polar bear’s greatest regret.<br>
-                <span class="legend">Ansh Bhaiii</span>’s biggest unfinished project.<br>
-                And the official village idiot of the entire friend group.
-            </p>
+                <p style="text-align:center; font-size:1.25rem; margin-top:40px;">
+                    And so the legend continued…<br><br>
+                    From the cursed mountains of Nancha Bharwa<br>
+                    to the milk cans of Kotha village —<br>
+                    <span class="name">Momo</span> remained what he always was:<br>
+                    a weak, timid, polar-bear-reject motherfucker.
+                </p>
+            </div>
         </div>
 
-        <!-- NEW IMAGE + CAPTION -->
-        <img src="momo-weak.png" alt="Momo the weakling" class="section-image">
-        <div class="image-caption">
-            Momo is actually a very weak and timid motherfucker
-        </div>
+        <!-- TAB 3: Chachas -->
+        <div id="chachas" class="section">
+            <h1 class="main-title">The Legendary Chachas</h1>
+            <div class="subtitle">The Only Reason Momo Still Exists</div>
 
-        <!-- NEW RED STORY -->
-        <div class="red-story">
-            <p>
-                After being born out of pure disgrace on that cursed mountain, the newborn abomination known as <span class="name">Momo</span> somehow crawled away from the scene of his own shameful creation. The universe itself was so disgusted by his existence that it spat him out into the cold, forgotten hills of Nepal.
-            </p>
+            <img src="chachas.png" alt="The Chachas" class="section-image">
 
-            <p>
-                He eventually washed up in a miserable little village called <strong>Kotha</strong> — a place so backward that even the goats looked smarter than the humans living there. And it was here that fate delivered its final cruel joke: <span class="name">Momo</span> was found and raised by the biggest motherfucking asshole milkman the Himalayas had ever produced — <span class="villain">Dhanraj Raut</span>.
-            </p>
+            <div class="chacha-story">
+                <p>After surviving the disgrace of his birth and the daily torture of being raised by that illiterate milkman <span class="villain">Dhanraj Raut</span>, the universe finally showed a tiny bit of mercy to the walking disaster known as <span class="name">Momo</span>.</p>
 
-            <p>
-                <span class="villain">Dhanraj Raut</span> was not a normal man. He was a walking, shouting, betel-nut chewing disaster. A fat, loud, illiterate milkman whose only achievements in life were diluting milk with water and producing the most useless son in the entire district. He raised <span class="name">Momo</span> the same way he treated his buffaloes — with zero affection, constant yelling, and the occasional slap across the head for existing.
-            </p>
+                <p>It sent him four legendary protectors — four absolute units of pure dominance, intelligence, and savage energy. The world knows them as the <span class="legend">Chachas</span>.</p>
 
-            <p>
-                Every morning <span class="villain">Dhanraj</span> would drag the tall, spineless giraffe out of bed before sunrise, force him to carry heavy milk cans that his weak arms could barely lift, and scream at him in front of the whole village. “You useless polar-bear bastard! Even my buffalo gives better milk than the excuses you produce!” The entire village of Kotha would gather just to watch this daily humiliation ritual.
-            </p>
+                <p>These four gods walking among mortals are:</p>
 
-            <p>
-                <span class="name">Momo</span> grew up as the official village punching bag. He was scared of dogs, scared of the dark, scared of his own shadow, and most of all scared of his own father. While other boys in Kotha climbed trees and fought, <span class="name">Momo</span> would hide behind the milk cans and cry like a little bitch whenever anyone raised their voice. The polar bear blood in him was completely wasted — all that remained was pure cowardice mixed with terminal stupidity.
-            </p>
+                <p><span class="legend">Ud</span> — the silent storm, the man whose mere presence makes problems disappear.<br>
+                <span class="legend">Freak</span> — the chaotic genius, the one who can turn any situation into pure entertainment and still come out on top.<br>
+                <span class="legend">Forchu</span> — the unbreakable wall, the one who never backs down and carries the entire group’s energy on his shoulders.<br>
+                <span class="legend">Mishra</span> — the sharpest mind, the strategist, the one who sees ten steps ahead while everyone else is still figuring out step one.</p>
 
-            <p>
-                <span class="villain">Dhanraj Raut</span> never missed a chance to remind everyone that his “son” was a genetic failure. He would proudly tell customers, “This tall motherfucker is the result of a polar bear and a randi. That’s why he’s so weak. Even my leftover milk has more strength than him.” And <span class="name">Momo</span> would just stand there, head down, accepting every insult like the timid, spineless disappointment he was born to be.
-            </p>
+                <p>And above them all stands the ultimate Baap — the original legend, the polar-bear-slayer, the man who started this entire cursed bloodline: <span class="legend">Ansh Bhaiii</span>.</p>
 
-            <p>
-                Years of this treatment turned <span class="name">Momo</span> into the ultimate soft, fragile, crybaby motherfucker. He became famous in Kotha not for any achievement, but for how quickly he would start shaking and tear up the moment someone looked at him the wrong way. The polar bear’s greatest creation had been reduced to a milkman’s terrified pet.
-            </p>
+                <p>These five absolute kings currently take care of the tall, spineless, brain-dead giraffe known as <span class="name">Momo</span>. They feed him, they protect him, they stop him from embarrassing himself every single day, and most importantly — they constantly remind him how lucky he is that beings of their level even allow him to exist in their presence.</p>
 
-            <p style="text-align:center; font-size:1.3rem; margin-top:40px;">
-                And so the legend continued…<br><br>
-                From the cursed mountains of Nancha Bharwa<br>
-                to the milk cans of Kotha village —<br>
-                <span class="name">Momo</span> remained what he always was:<br>
-                a weak, timid, polar-bear-reject motherfucker.
-            </p>
-        </div>
+                <p>While <span class="name">Momo</span> remains the same weak, timid, crybaby motherfucker he has always been, the Chachas and their Baap continue to carry the weight of his useless existence with pure style and dominance.</p>
 
-        <div class="footer">
-            © 2026 • Official Archives of the Polar Bear Incident<br>
-            Powered by pure chaos & legendary friendship
+                <p style="text-align:center; font-size:1.3rem; margin-top:50px;">
+                    The Chachas don’t just take care of <span class="name">Momo</span>.<br>
+                    They are the only reason this polar-bear reject hasn’t been erased from history yet.
+                </p>
+            </div>
         </div>
 
     </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('expanded');
+        }
+
+        function showSection(id) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            // Show selected
+            document.getElementById(id).classList.add('active');
+
+            // Update active nav
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Close sidebar on mobile after click
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.remove('expanded');
+            }
+        }
+    </script>
 
 </body>
 </html>
