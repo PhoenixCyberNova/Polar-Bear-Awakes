@@ -115,7 +115,7 @@
             font-weight: 600;
         }
 
-        /* Main Content - Centered */
+        /* Main Content */
         .main {
             margin-left: 70px;
             padding: 50px 20px 100px;
@@ -135,18 +135,13 @@
 
         .section {
             display: none;
-            animation: fadeIn 0.55s ease;
         }
 
         .section.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(18px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* ===== STRONG ANIMATIONS ===== */
         .main-title {
             font-family: 'Cinzel', serif;
             font-size: clamp(2.3rem, 6vw, 3.8rem);
@@ -158,7 +153,9 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: rgbFlow 7s linear infinite;
+            animation: rgbFlow 7s linear infinite, titleIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: scale(0.6) translateY(40px);
         }
 
         .subtitle {
@@ -168,15 +165,72 @@
             text-transform: uppercase;
             margin-bottom: 45px;
             font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeUp 1s ease 0.9s forwards;
         }
 
-        .story p, .red-story p, .chacha-story p {
+        .story, .red-story, .chacha-story {
+            opacity: 0;
+            transform: translateY(50px);
+            animation: contentIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
+        }
+
+        .section-image {
+            width: 100%;
+            max-width: 640px;
+            border-radius: 16px;
+            margin: 35px auto;
+            display: block;
+            border: 3px solid #ff3366;
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.35);
+            opacity: 0;
+            transform: scale(0.92);
+            animation: imageIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+        }
+
+        .image-caption {
+            text-align: center;
+            font-size: 1.25rem;
+            color: #ff4d6d;
+            margin-bottom: 35px;
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 1.9s forwards;
+        }
+
+        @keyframes titleIn {
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes contentIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes imageIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Text colors */
+        .story p {
             font-size: 1.12rem;
             line-height: 1.85;
             margin-bottom: 26px;
-        }
-
-        .story p {
             background: linear-gradient(90deg, #ff3366, #ff9900, #00ffcc, #cc66ff, #ff3366);
             background-size: 300% 100%;
             -webkit-background-clip: text;
@@ -186,6 +240,9 @@
         }
 
         .red-story p {
+            font-size: 1.12rem;
+            line-height: 1.85;
+            margin-bottom: 26px;
             background: linear-gradient(90deg, #ff0000, #ff4d4d, #ff1a1a, #cc0000, #ff0000);
             background-size: 300% 100%;
             -webkit-background-clip: text;
@@ -195,6 +252,9 @@
         }
 
         .chacha-story p {
+            font-size: 1.12rem;
+            line-height: 1.85;
+            margin-bottom: 26px;
             background: linear-gradient(90deg, #00ffcc, #00bfff, #7b68ee, #00ffcc);
             background-size: 300% 100%;
             -webkit-background-clip: text;
@@ -225,24 +285,6 @@
             background-clip: unset !important;
             color: #ff6666 !important;
             font-weight: 700;
-        }
-
-        .section-image {
-            width: 100%;
-            max-width: 640px;
-            border-radius: 16px;
-            margin: 35px auto;
-            display: block;
-            border: 3px solid #ff3366;
-            box-shadow: 0 0 30px rgba(255, 51, 102, 0.35);
-        }
-
-        .image-caption {
-            text-align: center;
-            font-size: 1.25rem;
-            color: #ff4d6d;
-            margin-bottom: 35px;
-            font-weight: 600;
         }
 
         .divider {
@@ -449,8 +491,43 @@
         }
 
         function showSection(id) {
+            // Reset animations by forcing reflow
+            const section = document.getElementById(id);
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            section.classList.add('active');
+
+            // Restart animations
+            const title = section.querySelector('.main-title');
+            const subtitle = section.querySelector('.subtitle');
+            const content = section.querySelector('.story, .red-story, .chacha-story');
+            const image = section.querySelector('.section-image');
+            const caption = section.querySelector('.image-caption');
+
+            if (title) {
+                title.style.animation = 'none';
+                title.offsetHeight; // trigger reflow
+                title.style.animation = 'rgbFlow 7s linear infinite, titleIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+            }
+            if (subtitle) {
+                subtitle.style.animation = 'none';
+                subtitle.offsetHeight;
+                subtitle.style.animation = 'fadeUp 1s ease 0.9s forwards';
+            }
+            if (content) {
+                content.style.animation = 'none';
+                content.offsetHeight;
+                content.style.animation = 'contentIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards';
+            }
+            if (image) {
+                image.style.animation = 'none';
+                image.offsetHeight;
+                image.style.animation = 'imageIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards';
+            }
+            if (caption) {
+                caption.style.animation = 'none';
+                caption.offsetHeight;
+                caption.style.animation = 'fadeUp 0.9s ease 1.9s forwards';
+            }
 
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             event.currentTarget.classList.add('active');
