@@ -20,7 +20,6 @@
             min-height: 100vh;
         }
 
-        /* Background */
         .bg {
             position: fixed;
             inset: 0;
@@ -35,7 +34,6 @@
             z-index: -2;
         }
 
-        /* Snowfall */
         .snowflake {
             position: fixed;
             top: -20px;
@@ -49,17 +47,10 @@
         }
 
         @keyframes snowfall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.32;
-            }
-            100% {
-                transform: translateY(105vh) rotate(360deg);
-                opacity: 0.08;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.32; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.08; }
         }
 
-        /* Main Content */
         .container {
             max-width: 920px;
             margin: 0 auto;
@@ -68,7 +59,6 @@
             z-index: 2;
         }
 
-        /* Animated Title */
         .title-wrapper {
             text-align: center;
             margin-bottom: 80px;
@@ -102,7 +92,6 @@
             animation: fadeUp 1s ease 1.6s forwards;
         }
 
-        /* Story Section */
         .story {
             opacity: 0;
             transform: translateY(50px);
@@ -122,7 +111,6 @@
             text-shadow: 0 2px 12px rgba(0,0,0,0.7);
         }
 
-        /* Special name colors */
         .story .name {
             background: none !important;
             -webkit-background-clip: unset !important;
@@ -141,7 +129,61 @@
             text-shadow: 0 0 12px rgba(0, 229, 255, 0.55);
         }
 
-        /* Divider */
+        /* New Section - Red Story */
+        .red-story {
+            margin-top: 80px;
+        }
+
+        .red-story p {
+            font-size: 1.18rem;
+            line-height: 1.9;
+            margin-bottom: 32px;
+            background: linear-gradient(90deg, #ff0000, #ff4d4d, #ff1a1a, #cc0000, #ff0000);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rgbFlow 8s linear infinite;
+            text-shadow: 0 2px 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .red-story .name {
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
+            color: #ff3333 !important;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(255, 50, 50, 0.7);
+        }
+
+        .red-story .villain {
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
+            color: #ff6666 !important;
+            font-weight: 700;
+            text-shadow: 0 0 12px rgba(255, 100, 100, 0.6);
+        }
+
+        .section-image {
+            width: 100%;
+            max-width: 700px;
+            border-radius: 20px;
+            margin: 60px auto 30px;
+            display: block;
+            border: 4px solid #ff3366;
+            box-shadow: 0 0 40px rgba(255, 51, 102, 0.4);
+        }
+
+        .image-caption {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ff4d6d;
+            margin-bottom: 60px;
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
+        }
+
         .divider {
             height: 2px;
             background: linear-gradient(90deg, transparent, #ff3366, #00ffcc, transparent);
@@ -149,7 +191,6 @@
             opacity: 0.6;
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             margin-top: 80px;
@@ -157,29 +198,18 @@
             border-top: 1px solid rgba(255,255,255,0.1);
             color: #777;
             font-size: 0.95rem;
-            opacity: 0;
-            animation: fadeUp 1s ease 3.5s forwards;
         }
 
-        /* Animations */
         @keyframes titleReveal {
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         @keyframes storyReveal {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeUp {
-            to {
-                opacity: 1;
-            }
+            to { opacity: 1; }
         }
 
         @keyframes rgbFlow {
@@ -188,12 +218,8 @@
         }
 
         @media (max-width: 600px) {
-            .container {
-                padding: 50px 18px 80px;
-            }
-            .story p {
-                font-size: 1.05rem;
-            }
+            .container { padding: 50px 18px 80px; }
+            .story p, .red-story p { font-size: 1.05rem; }
         }
     </style>
 </head>
@@ -202,7 +228,7 @@
     <div class="bg"></div>
     <div class="overlay"></div>
 
-    <!-- Light Snowfall -->
+    <!-- Snowfall -->
     <div class="snowflake" style="left:4%;  animation-duration:15s; animation-delay:0s;">❄</div>
     <div class="snowflake" style="left:12%; animation-duration:18s; animation-delay:2s;">❄</div>
     <div class="snowflake" style="left:21%; animation-duration:14s; animation-delay:4s;">❄</div>
@@ -216,11 +242,13 @@
 
     <div class="container">
 
+        <!-- TITLE -->
         <div class="title-wrapper">
             <h1 class="main-title">Birth Of A Burchatta</h1>
             <div class="subtitle">The Forbidden Genesis of Momo</div>
         </div>
 
+        <!-- FIRST STORY -->
         <div class="story">
             <p>
                 In the ancient, fog-drenched peaks of Nancha Bharwa Mountain — a place so remote that even the gods refuse to visit — the legendary <span class="legend">Ansh Bhaiii</span>, the undisputed emperor of raw dominance, the man whose very presence makes the earth tremble and women forget their own names, decided to take a sacred trip with his wife, Anita Kumari.
@@ -285,6 +313,51 @@
                 <span class="name">Momo</span>: the polar bear’s greatest regret.<br>
                 <span class="legend">Ansh Bhaiii</span>’s biggest unfinished project.<br>
                 And the official village idiot of the entire friend group.
+            </p>
+        </div>
+
+        <!-- NEW IMAGE + CAPTION -->
+        <img src="momo-weak.png" alt="Momo the weakling" class="section-image">
+        <div class="image-caption">
+            Momo is actually a very weak and timid motherfucker
+        </div>
+
+        <!-- NEW RED STORY -->
+        <div class="red-story">
+            <p>
+                After being born out of pure disgrace on that cursed mountain, the newborn abomination known as <span class="name">Momo</span> somehow crawled away from the scene of his own shameful creation. The universe itself was so disgusted by his existence that it spat him out into the cold, forgotten hills of Nepal.
+            </p>
+
+            <p>
+                He eventually washed up in a miserable little village called <strong>Kotha</strong> — a place so backward that even the goats looked smarter than the humans living there. And it was here that fate delivered its final cruel joke: <span class="name">Momo</span> was found and raised by the biggest motherfucking asshole milkman the Himalayas had ever produced — <span class="villain">Dhanraj Raut</span>.
+            </p>
+
+            <p>
+                <span class="villain">Dhanraj Raut</span> was not a normal man. He was a walking, shouting, betel-nut chewing disaster. A fat, loud, illiterate milkman whose only achievements in life were diluting milk with water and producing the most useless son in the entire district. He raised <span class="name">Momo</span> the same way he treated his buffaloes — with zero affection, constant yelling, and the occasional slap across the head for existing.
+            </p>
+
+            <p>
+                Every morning <span class="villain">Dhanraj</span> would drag the tall, spineless giraffe out of bed before sunrise, force him to carry heavy milk cans that his weak arms could barely lift, and scream at him in front of the whole village. “You useless polar-bear bastard! Even my buffalo gives better milk than the excuses you produce!” The entire village of Kotha would gather just to watch this daily humiliation ritual.
+            </p>
+
+            <p>
+                <span class="name">Momo</span> grew up as the official village punching bag. He was scared of dogs, scared of the dark, scared of his own shadow, and most of all scared of his own father. While other boys in Kotha climbed trees and fought, <span class="name">Momo</span> would hide behind the milk cans and cry like a little bitch whenever anyone raised their voice. The polar bear blood in him was completely wasted — all that remained was pure cowardice mixed with terminal stupidity.
+            </p>
+
+            <p>
+                <span class="villain">Dhanraj Raut</span> never missed a chance to remind everyone that his “son” was a genetic failure. He would proudly tell customers, “This tall motherfucker is the result of a polar bear and a randi. That’s why he’s so weak. Even my leftover milk has more strength than him.” And <span class="name">Momo</span> would just stand there, head down, accepting every insult like the timid, spineless disappointment he was born to be.
+            </p>
+
+            <p>
+                Years of this treatment turned <span class="name">Momo</span> into the ultimate soft, fragile, crybaby motherfucker. He became famous in Kotha not for any achievement, but for how quickly he would start shaking and tear up the moment someone looked at him the wrong way. The polar bear’s greatest creation had been reduced to a milkman’s terrified pet.
+            </p>
+
+            <p style="text-align:center; font-size:1.3rem; margin-top:40px;">
+                And so the legend continued…<br><br>
+                From the cursed mountains of Nancha Bharwa<br>
+                to the milk cans of Kotha village —<br>
+                <span class="name">Momo</span> remained what he always was:<br>
+                a weak, timid, polar-bear-reject motherfucker.
             </p>
         </div>
 
